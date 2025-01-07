@@ -1,0 +1,60 @@
+﻿@model CustomerExam.UI.Models.DTOs.CustomerDto
+
+@{
+    ViewData["Title"] = "Delete Customer";
+}
+
+<div class="card p-4 shadow">
+    <h2 class="card-title">Delete Customer</h2>
+    <div class="card-body">
+        <div class="row mb-4">
+            <div class="col-4">
+                <h5 class="form-label">Name</h5>
+                @Html.DisplayFor(model => model.FullName)
+            </div>
+            <div class="col-4">
+                <h5 class="form-label">Birth Date</h5>
+                @Html.DisplayFor(model => model.Birthdate)
+            </div>
+            <div class="col-4">
+                <h5 class="form-label">Gender</h5>
+                @Html.DisplayFor(model => model.Gender)
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-6">
+                <h5 class="form-label">Address</h5>
+                <ul>
+                    @foreach (var address in Model.Addresses)
+                    {
+                        <li>
+                            @Html.DisplayFor(model => address.Street),
+                            @Html.DisplayFor(model => address.Barangay),
+                            @Html.DisplayFor(model => address.City),
+                            @Html.DisplayFor(model => address.Province),
+                            @Html.DisplayFor(model => address.ZipCode)
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="col-6">
+                <h5 class="form-label">Contact Number</h5>
+                <ul>
+                    @foreach (var contactNumber in Model.ContactNumbers)
+                    {
+                        <li>
+                            @Html.DisplayFor(model => contactNumber.Number)
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <hr />
+        <div>
+            <form asp-action="Delete">
+                <input type="submit" value="Delete" class="btn btn-danger" />
+                <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>

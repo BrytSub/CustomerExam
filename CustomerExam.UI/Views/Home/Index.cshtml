@@ -1,0 +1,37 @@
+﻿@model List<CustomerExam.UI.Models.DTOs.CustomerDto>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="card p-4 shadow">
+    <h2 class="card-title">Customers</h2>
+    <div class="card-body">
+        <div class="d-flex justify-content-end mb-3">
+            <a class="btn btn-success" asp-controller="Home" asp-action="Create">Create Customer</a>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var customer in Model)
+                {
+                    <tr>
+                        <td>@customer.Id</td>
+                        <td>@customer.FullName</td>
+                        <td>
+                            <a class="btn btn-primary" asp-action="Details" asp-route-id="@customer.Id">Details</a>
+                            <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@customer.Id">Edit</a>
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@customer.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

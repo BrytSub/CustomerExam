@@ -1,0 +1,167 @@
+﻿@model CustomerExam.UI.Models.DTOs.CustomerDto
+
+@{
+    ViewData["Title"] = "Edit Customer";
+}
+
+<div class="card p-4 shadow">
+    <h2 class="card-title">Edit Customer</h2>
+    <div class="card-body">
+        <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Customer Details -->
+            <div class="row mb-4">
+                <div class="form-group col-4">
+                    <label class="form-label">Name</label>
+                    <input class="form-control" asp-for="FullName" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-4">
+                    <label class="form-label">Birth Date</label>
+                    <input class="form-control" asp-for="Birthdate" type="date" />
+                    <span asp-validation-for="Birthdate" class="text-danger"></span>
+                </div>
+                <div class="form-group col-4">
+                    <label class="form-label">Gender</label>
+                    <select class="form-control" asp-for="Gender">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Addresses --> 
+            <div id="addressSection" class="mt-2">
+                @for (var i = 0; i < Model.Addresses.Count; i++)
+                {
+                    <h5 class="form-label">Address @(i + 1)</h5>
+                    <div class="addressFields mb-3">
+                        <div class="row">
+                            <div class="col-4">
+                                <input type="text" class="form-control" asp-for="Addresses[i].Street" placeholder="Street" />
+                            </div>
+                            <div class="col-4">
+                                <input type="text" class="form-control" asp-for="Addresses[i].Barangay" placeholder="Barangay" />
+                            </div>
+                            <div class="col-4">
+                                <input type="text" class="form-control" asp-for="Addresses[i].City" placeholder="City" />
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <input type="text" class="form-control" asp-for="Addresses[i].Province" placeholder="Province" />
+                            </div>
+                            <div class="col-4">
+                                <input type="text" class="form-control" asp-for="Addresses[i].ZipCode" placeholder="Zip Code" />
+                            </div>
+                            <div class="col-4 text-end">
+                                <button type="button" class="btn btn-danger btn-sm remove-address">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <button type="button" class="btn btn-primary btn-sm mt-3" id="addAddressButton">Add Address</button>
+
+            <!-- Contact Numbers -->
+            <h5 class="form-label mt-5">Contact Numbers</h5>
+            <div id="contactNumberSection" class="mt-3">
+                @for (var i = 0; i < Model.ContactNumbers.Count; i++)
+                {
+                    <div class="contactNumberFields mb-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <input type="text" class="form-control" asp-for="ContactNumbers[i].Number" placeholder="Contact Number" />
+                            </div>
+                            <div class="col-4 text-end">
+                                <button type="button" class="btn btn-danger btn-sm remove-contact-number">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <button type="button" class="btn btn-primary btn-sm mt-3 mb-3" id="addContactNumberButton">Add Contact Number</button>
+            <hr />
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success">Save Changes</button>
+                <a class="btn btn-danger" asp-controller="Home" asp-action="Index">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let addressIndex = @Model.Addresses.Count;
+        let contactNumberIndex = @Model.ContactNumbers.Count;
+
+        // Add new address
+        document.getElementById('addAddressButton').addEventListener('click', function () {
+            const addressSection = document.getElementById('addressSection');
+            const addressFields = document.createElement('div');
+            addressFields.className = 'addressFields mb-3';
+            addressFields.innerHTML = `
+                <h5 class="form-label">Address ${addressIndex + 1}</h5>
+                <div class="row">
+                    <div class="col-4">
+                        <input type="text" class="form-control" name="Addresses[${addressIndex}].Street" placeholder="Street" />
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" name="Addresses[${addressIndex}].Barangay" placeholder="Barangay" />
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" name="Addresses[${addressIndex}].City" placeholder="City" />
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-4">
+                        <input type="text" class="form-control" name="Addresses[${addressIndex}].Province" placeholder="Province" />
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" name="Addresses[${addressIndex}].ZipCode" placeholder="Zip Code" />
+                    </div>
+                    <div class="col-4">
+                        <button type="button" class="btn btn-danger btn-sm remove-address">Remove</button>
+                    </div>
+                </div>
+            `;
+            addressSection.appendChild(addressFields);
+            addressIndex++;
+        });
+
+        // Remove address
+        document.getElementById('addressSection').addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-address')) {
+                e.target.closest('.addressFields').remove();
+            }
+        });
+
+        // Add new contact number
+        document.getElementById('addContactNumberButton').addEventListener('click', function () {
+            const contactNumberSection = document.getElementById('contactNumberSection');
+            const contactNumberFields = document.createElement('div');
+            contactNumberFields.className = 'contactNumberFields mb-3';
+            contactNumberFields.innerHTML = `
+                <div class="row">
+                    <div class="col-8">
+                        <input type="text" class="form-control" name="ContactNumbers[${contactNumberIndex}].Number" placeholder="Contact Number" />
+                    </div>
+                    <div class="col-4 text-end">
+                        <button type="button" class="btn btn-danger btn-sm remove-contact-number">Remove</button>
+                    </div>
+                </div>
+            `;
+            contactNumberSection.appendChild(contactNumberFields);
+            contactNumberIndex++;
+        });
+
+        // Remove contact number
+        document.getElementById('contactNumberSection').addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-contact-number')) {
+                e.target.closest('.contactNumberFields').remove();
+            }
+        });
+    </script>
+}

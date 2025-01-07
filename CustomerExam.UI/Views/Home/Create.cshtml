@@ -1,0 +1,160 @@
+﻿@model CustomerExam.UI.Models.CreateCustomerVM
+
+@{
+    ViewData["Title"] = "Create Customer";
+}
+
+<div class="card p-4 shadow">
+    <h2 class="card-title">Create Customer</h2>
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row mb-4">
+                <div class="form-group col-4">
+                    <h5 class="form-label">Name</h5>
+                    <input class="form-control" asp-for="FullName" class="form-control" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-4">
+                    <h5 class="form-label">Birth Date</h5>
+                    <input class="form-control" type="date" asp-for="Birthdate" class="form-control" />
+                    <span asp-validation-for="Birthdate" class="text-danger"></span>
+                </div>
+                <div class="form-group col-4">
+                    <h5 class="form-label">Gender</h5>
+                    <select class="form-control" asp-for="Gender">
+                        <option value="" disabled selected>Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Address Section -->
+            <div id="addressSection" class="mt-3">
+                <div class="addressFields">
+                    <!-- Initial Address Fields -->
+                    <h5 class="form-label">Address 1</h5>
+                    <div class="address-group mb-4">
+                        <div class="row">
+                            <div class="col-4">
+                                <input type="text" class="form-control" name="Addresses[0].Street" placeholder="Street" />
+                            </div>
+                            <div class="col-4">
+                                <input type="text" class="form-control" name="Addresses[0].Barangay" placeholder="Barangay" />
+                            </div>
+                            <div class="col-4">
+                                <input type="text" class="form-control" name="Addresses[0].City" placeholder="City" />
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-4">
+                                <input type="text" class="form-control" name="Addresses[0].Province" placeholder="Province" />
+                            </div>
+                            <div class="col-4">
+                                <input type="text" class="form-control" name="Addresses[0].ZipCode" placeholder="Zip Code" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm mt-3" id="addAddressButton">Add Address</button>
+
+            <!-- Contact Number Section -->
+            <h5 class="form-label mt-5">Contact Numbers</h5>
+            <div id="contactNumberSection" class="mt-3">
+                <div class="contactNumberFields">
+                    <!-- Initial Contact Number Field -->
+                    <div class="contact-number-group mb-4">
+                        <div class="row">
+                            <div class="col-6">
+                                <input type="text" class="form-control" name="ContactNumbers[0].Number" placeholder="Enter Contact Number" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm mt-3 mb-3" id="addContactNumberButton">Add Contact Number</button>
+            <hr />
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success">Save</button>
+                <a class="btn btn-danger" asp-controller="Home" asp-action="Index">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let addressIndex = 1;
+        let contactNumberIndex = 1;
+
+        // Add new address fields
+        document.getElementById('addAddressButton').addEventListener('click', function () {
+            const addressSection = document.getElementById('addressSection');
+            const addressGroup = document.createElement('div');
+            addressGroup.className = 'address-group mb-4';
+            addressGroup.innerHTML = `
+                        <h5 class="form-label">Address ${addressIndex + 1}</h5>
+                        <div class="row">
+                            <div class="col-4">
+                                <input type="text" class="form-control" name="Addresses[${addressIndex}].Street" placeholder="Street" />
+                            </div>
+                            <div class="col-4">
+                                <input type="text" class="form-control" name="Addresses[${addressIndex}].Barangay" placeholder="Barangay" />
+                            </div>
+                            <div class="col-4">
+                                <input type="text" class="form-control" name="Addresses[${addressIndex}].City" placeholder="City" />
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-4">
+                                <input type="text" class="form-control" name="Addresses[${addressIndex}].Province" placeholder="Province" />
+                            </div>
+                            <div class="col-4">
+                                <input type="text" class="form-control" name="Addresses[${addressIndex}].ZipCode" placeholder="Zip Code" />
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-danger btn-sm remove-address">Remove</button>
+                            </div>
+                        </div>
+                    `;
+            addressSection.appendChild(addressGroup);
+            addressIndex++;
+        });
+
+        // Remove address fields
+        document.getElementById('addressSection').addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-address')) {
+                e.target.closest('.address-group').remove();
+            }
+        });
+
+        // Add new contact number fields
+        document.getElementById('addContactNumberButton').addEventListener('click', function () {
+            const contactNumberSection = document.getElementById('contactNumberSection');
+            const contactNumberGroup = document.createElement('div');
+            contactNumberGroup.className = 'contact-number-group mb-4';
+            contactNumberGroup.innerHTML = `
+                        <div class="row">
+                            <div class="col-6">
+                                <input type="text" class="form-control" name="ContactNumbers[${contactNumberIndex}].Number" placeholder="Enter Contact Number" />
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-danger btn-sm remove-contact-number">Remove</button>
+                            </div>
+                        </div>
+                    `;
+            contactNumberSection.appendChild(contactNumberGroup);
+            contactNumberIndex++;
+        });
+
+        // Remove contact number fields
+        document.getElementById('contactNumberSection').addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-contact-number')) {
+                e.target.closest('.contact-number-group').remove();
+            }
+        });
+    </script>
+}
