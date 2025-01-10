@@ -22,11 +22,13 @@ namespace CustomerExam.API.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CustomerExam.API.Models.Entities.Address", b =>
+            modelBuilder.Entity("CustomerExam.API.Models.Address", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Barangay")
                         .IsRequired()
@@ -36,8 +38,8 @@ namespace CustomerExam.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Province")
                         .IsRequired()
@@ -57,14 +59,16 @@ namespace CustomerExam.API.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("CustomerExam.API.Models.Entities.ContactNumber", b =>
+            modelBuilder.Entity("CustomerExam.API.Models.ContactNumber", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Number")
                         .IsRequired()
@@ -77,11 +81,13 @@ namespace CustomerExam.API.Migrations
                     b.ToTable("ContactNumbers");
                 });
 
-            modelBuilder.Entity("CustomerExam.API.Models.Entities.Customer", b =>
+            modelBuilder.Entity("CustomerExam.API.Models.Customer", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Birthdate")
                         .HasColumnType("datetime2");
@@ -99,25 +105,25 @@ namespace CustomerExam.API.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("CustomerExam.API.Models.Entities.Address", b =>
+            modelBuilder.Entity("CustomerExam.API.Models.Address", b =>
                 {
-                    b.HasOne("CustomerExam.API.Models.Entities.Customer", null)
+                    b.HasOne("CustomerExam.API.Models.Customer", null)
                         .WithMany("Addresses")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CustomerExam.API.Models.Entities.ContactNumber", b =>
+            modelBuilder.Entity("CustomerExam.API.Models.ContactNumber", b =>
                 {
-                    b.HasOne("CustomerExam.API.Models.Entities.Customer", null)
+                    b.HasOne("CustomerExam.API.Models.Customer", null)
                         .WithMany("ContactNumbers")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CustomerExam.API.Models.Entities.Customer", b =>
+            modelBuilder.Entity("CustomerExam.API.Models.Customer", b =>
                 {
                     b.Navigation("Addresses");
 

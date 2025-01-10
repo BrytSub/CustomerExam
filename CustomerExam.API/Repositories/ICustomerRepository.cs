@@ -5,8 +5,8 @@ namespace CustomerExam.API.Repositories;
 public interface ICustomerRepository
 {
     Task<IEnumerable<Customer>> GetAllAsync();
-    Task<Customer?> GetByIdAsync(Guid id);
-    Task<Guid> CreateAsync(Customer entity);
+    Task<Customer?> GetByIdAsync(int id);
+    Task<int> CreateAsync(Customer entity);
     Task DeleteAsync(Customer entity);
     Task SaveChangesAsync();
 }

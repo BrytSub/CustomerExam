@@ -12,8 +12,7 @@ public class CustomerRepository : ICustomerRepository
     {
         _context = context;
     }
-
-    public async Task<Guid> CreateAsync(Customer entity)
+    public async Task<int> CreateAsync(Customer entity)
     {
         await _context.AddAsync(entity);
         await _context.SaveChangesAsync();
@@ -37,7 +36,7 @@ public class CustomerRepository : ICustomerRepository
         return customers;
     }
 
-    public async Task<Customer?> GetByIdAsync(Guid id)
+    public async Task<Customer?> GetByIdAsync(int id)
     {
         var customer = await _context.Customers
             .Include(c => c.Addresses)

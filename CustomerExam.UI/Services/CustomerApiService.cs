@@ -11,7 +11,7 @@ public class CustomerApiService(HttpClient _httpClient) : ICustomerApiService
         response.EnsureSuccessStatusCode();
     }
 
-    public async Task DeleteCustomerAsync(Guid id)
+    public async Task DeleteCustomerAsync(int id)
     {
         var response = await _httpClient.DeleteAsync($"api/customer/{id}");
         response.EnsureSuccessStatusCode();
@@ -23,12 +23,12 @@ public class CustomerApiService(HttpClient _httpClient) : ICustomerApiService
         return response ?? new List<CustomerDto>();
     }
 
-    public async Task<CustomerDto?> GetCustomerByIdAsync(Guid id)
+    public async Task<CustomerDto?> GetCustomerByIdAsync(int id)
     {
         return await _httpClient.GetFromJsonAsync<CustomerDto>($"api/customer/{id}");
     }
 
-    public async Task UpdateCustomerAsync(Guid id, CustomerDto customer)
+    public async Task UpdateCustomerAsync(int id, CustomerDto customer)
     {
         var response = await _httpClient.PutAsJsonAsync($"api/customer/{id}", customer);
         response.EnsureSuccessStatusCode();

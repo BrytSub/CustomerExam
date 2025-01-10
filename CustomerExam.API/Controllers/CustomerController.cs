@@ -2,16 +2,23 @@
 using CustomerExam.API.Models.Entities;
 using CustomerExam.API.Repositories;
 using Mapster;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace CustomerExam.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomerController(ICustomerRepository _customerRepository, ILogger<CustomerController> _logger) : ControllerBase
+    public class CustomerController : ControllerBase
     {
+        private readonly ICustomerRepository _customerRepository;
+        private readonly ILogger<CustomerController> _logger;
+
+        public CustomerController(ICustomerRepository customerRepository, ILogger<CustomerController> logger)
+        {
+            _customerRepository = customerRepository;
+            _logger = logger;
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CustomerDto>>> GetAll()
         {
@@ -33,7 +40,7 @@ namespace CustomerExam.API.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<CustomerDto>> GetById(Guid id)
+        public async Task<ActionResult<CustomerDto>> GetById(int id)
         {
             try
             {
@@ -80,7 +87,7 @@ namespace CustomerExam.API.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateCustomerRequestDto request)
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateCustomerRequestDto request)
         {
             if (!ModelState.IsValid)
                 return BadRequest("Invalid customer data.");
@@ -106,7 +113,7 @@ namespace CustomerExam.API.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {

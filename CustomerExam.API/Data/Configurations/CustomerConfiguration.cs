@@ -1,5 +1,4 @@
 ﻿using CustomerExam.API.Models.Entities;
-using CustomerExam.API.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -20,8 +19,5 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
             .WithOne()
             .HasForeignKey(cn => cn.CustomerId)
             .OnDelete(DeleteBehavior.Cascade);
-
-        builder.Property(c => c.Gender)
-            .HasConversion(g => g.ToString(), gender => (Gender)Enum.Parse(typeof(Gender), gender));
     }
 }

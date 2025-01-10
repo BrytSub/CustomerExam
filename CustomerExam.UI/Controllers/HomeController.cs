@@ -14,7 +14,7 @@ namespace CustomerExam.UI.Controllers
             return View(customers);
         }
 
-        public async Task<IActionResult> Details(Guid id)
+        public async Task<IActionResult> Details(int id)
         {
             var customer = await _customerApiService.GetCustomerByIdAsync(id);
             return View(customer);
@@ -37,14 +37,14 @@ namespace CustomerExam.UI.Controllers
             return View(customer);
         }
 
-        public async Task<IActionResult> Edit(Guid id)
+        public async Task<IActionResult> Edit(int id)
         {
             var customer = await _customerApiService.GetCustomerByIdAsync(id);
             return View(customer);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, CustomerDto customer)
+        public async Task<IActionResult> Edit(int id, CustomerDto customer)
         {
             if (ModelState.IsValid)
             {
@@ -54,14 +54,14 @@ namespace CustomerExam.UI.Controllers
             return View(customer);
         }
 
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(int id)
         {
             var customer = await _customerApiService.GetCustomerByIdAsync(id);
             return View(customer);
         }
 
         [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _customerApiService.DeleteCustomerAsync(id);
             return RedirectToAction(nameof(Index));

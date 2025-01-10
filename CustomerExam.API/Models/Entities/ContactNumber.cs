@@ -1,9 +1,8 @@
-﻿using CustomerExam.API.Models.Common;
+﻿namespace CustomerExam.API.Models.Entities;
 
-namespace CustomerExam.API.Models.Entities;
-
-public class ContactNumber : BaseEntity
+public class ContactNumber
 {
+    public int Id { get; set; }
     public string Number { get; set; } = default!;
-    public Guid CustomerId { get; set; }
+    public int CustomerId { get; set; }
 }

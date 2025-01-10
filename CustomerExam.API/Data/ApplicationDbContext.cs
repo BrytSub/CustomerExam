@@ -4,11 +4,16 @@ using System.Reflection;
 
 namespace CustomerExam.API.Data;
 
-public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
+public class ApplicationDbContext : DbContext
 {
-    public DbSet<Customer> Customers => Set<Customer>();
-    public DbSet<Address> Addresses => Set<Address>();
-    public DbSet<ContactNumber> ContactNumbers => Set<ContactNumber>();
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+    {
+
+    }
+
+    public DbSet<Customer> Customers { get; set; }
+    public DbSet<Address> Addresses { get; set; }
+    public DbSet<ContactNumber> ContactNumbers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
