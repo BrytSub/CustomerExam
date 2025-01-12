@@ -36,8 +36,8 @@
             <div id="addressSection" class="mt-2">
                 @for (var i = 0; i < Model.Addresses.Count; i++)
                 {
-                    <h5 class="form-label">Address @(i + 1)</h5>
                     <div class="addressFields mb-3">
+                        <h5 class="form-label">Address</h5>
                         <div class="row">
                             <div class="col-4">
                                 <input type="text" class="form-control" asp-for="Addresses[i].Street" placeholder="Street" />
@@ -97,6 +97,28 @@
         let addressIndex = @Model.Addresses.Count;
         let contactNumberIndex = @Model.ContactNumbers.Count;
 
+        // Function to re-index addresses
+        function reindexAddresses() {
+            const addressFields = document.querySelectorAll('.addressFields');
+            addressFields.forEach((field, index) => {
+                field.querySelectorAll('input').forEach(input => {
+                    const name = input.name.replace(/\[.*?\]/, `[${index}]`);
+                    input.setAttribute('name', name);
+                });
+            });
+            addressIndex = addressFields.length;
+        }
+
+        // Function to re-index contact numbers
+        function reindexContactNumbers() {
+            const contactNumberFields = document.querySelectorAll('.contactNumberFields');
+            contactNumberFields.forEach((field, index) => {
+                const input = field.querySelector('input');
+                input.setAttribute('name', `ContactNumbers[${index}].Number`);
+            });
+            contactNumberIndex = contactNumberFields.length;
+        }
+
         // Function to update address "Remove" button visibility
         function updateAddressRemoveButtons() {
             const removeAddressButtons = document.querySelectorAll('.remove-address');
@@ -115,30 +137,30 @@
             const addressFields = document.createElement('div');
             addressFields.className = 'addressFields mb-3';
             addressFields.innerHTML = `
-                        <h5 class="form-label">Address ${addressIndex + 1}</h5>
-                        <div class="row">
-                            <div class="col-4">
-                                <input type="text" class="form-control" name="Addresses[${addressIndex}].Street" placeholder="Street" required />
-                            </div>
-                            <div class="col-4">
-                                <input type="text" class="form-control" name="Addresses[${addressIndex}].Barangay" placeholder="Barangay" required />
-                            </div>
-                            <div class="col-4">
-                                <input type="text" class="form-control" name="Addresses[${addressIndex}].City" placeholder="City" required />
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-4">
-                                <input type="text" class="form-control" name="Addresses[${addressIndex}].Province" placeholder="Province" required />
-                            </div>
-                            <div class="col-4">
-                                <input type="text" class="form-control" name="Addresses[${addressIndex}].ZipCode" placeholder="Zip Code" required />
-                            </div>
-                            <div class="col-4">
-                                <button type="button" class="btn btn-danger btn-sm remove-address">Remove</button>
-                            </div>
-                        </div>
-                    `;
+                <h5 class="form-label">Address</h5>
+                <div class="row">
+                    <div class="col-4">
+                        <input type="text" class="form-control" name="Addresses[${addressIndex}].Street" placeholder="Street" required />
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" name="Addresses[${addressIndex}].Barangay" placeholder="Barangay" required />
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" name="Addresses[${addressIndex}].City" placeholder="City" required />
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-4">
+                        <input type="text" class="form-control" name="Addresses[${addressIndex}].Province" placeholder="Province" required />
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" name="Addresses[${addressIndex}].ZipCode" placeholder="Zip Code" required />
+                    </div>
+                    <div class="col-4">
+                        <button type="button" class="btn btn-danger btn-sm remove-address">Remove</button>
+                    </div>
+                </div>
+            `;
             addressSection.appendChild(addressFields);
             addressIndex++;
             updateAddressRemoveButtons();
@@ -148,6 +170,7 @@
         document.getElementById('addressSection').addEventListener('click', function (e) {
             if (e.target.classList.contains('remove-address')) {
                 e.target.closest('.addressFields').remove();
+                reindexAddresses();
                 updateAddressRemoveButtons();
             }
         });
@@ -158,15 +181,15 @@
             const contactNumberFields = document.createElement('div');
             contactNumberFields.className = 'contactNumberFields mb-3';
             contactNumberFields.innerHTML = `
-                        <div class="row">
-                            <div class="col-8">
-                                <input type="text" class="form-control" name="ContactNumbers[${contactNumberIndex}].Number" placeholder="Contact Number" required />
-                            </div>
-                            <div class="col-4 text-end">
-                                <button type="button" class="btn btn-danger btn-sm remove-contact-number">Remove</button>
-                            </div>
-                        </div>
-                    `;
+                <div class="row">
+                    <div class="col-8">
+                        <input type="text" class="form-control" name="ContactNumbers[${contactNumberIndex}].Number" placeholder="Contact Number" required />
+                    </div>
+                    <div class="col-4 text-end">
+                        <button type="button" class="btn btn-danger btn-sm remove-contact-number">Remove</button>
+                    </div>
+                </div>
+            `;
             contactNumberSection.appendChild(contactNumberFields);
             contactNumberIndex++;
             updateContactNumberRemoveButtons();
@@ -176,6 +199,7 @@
         document.getElementById('contactNumberSection').addEventListener('click', function (e) {
             if (e.target.classList.contains('remove-contact-number')) {
                 e.target.closest('.contactNumberFields').remove();
+                reindexContactNumbers();
                 updateContactNumberRemoveButtons();
             }
         });

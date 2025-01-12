@@ -33,35 +33,34 @@
 
             <!-- Address Section -->
             <div id="addressSection" class="mt-3">
-                <div id="addressSection" class="mt-3">
-                    <div class="addressFields">
-                        <!-- Initial Address Fields -->
-                        <h5 class="form-label">Address 1</h5>
-                        <div class="address-group mb-4">
-                            <div class="row">
-                                <div class="col-4">
-                                    <input type="text" class="form-control" name="Addresses[0].Street" placeholder="Street" />
-                                    <span asp-validation-for="Addresses[0].Street" class="text-danger"></span>
-                                </div>
-                                <div class="col-4">
-                                    <input type="text" class="form-control" name="Addresses[0].Barangay" placeholder="Barangay" />
-                                    <span asp-validation-for="Addresses[0].Barangay" class="text-danger"></span>
-                                </div>
-                                <div class="col-4">
-                                    <input type="text" class="form-control" name="Addresses[0].City" placeholder="City" />
-                                    <span asp-validation-for="Addresses[0].City" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="col-4">
-                                    <input type="text" class="form-control" name="Addresses[0].Province" placeholder="Province" />
-                                    <span asp-validation-for="Addresses[0].Province" class="text-danger"></span>
-                                </div>
-                                <div class="col-4">
-                                    <input type="text" class="form-control" name="Addresses[0].ZipCode" placeholder="Zip Code" />
-                                    <span asp-validation-for="Addresses[0].ZipCode" class="text-danger"></span>
-                                </div>
-                            </div>
+                <div class="address-group mb-4">
+                    <h5 class="form-label">Address</h5>
+                    <div class="row">
+                        <div class="col-4">
+                            <input type="text" class="form-control" name="Addresses[0].Street" placeholder="Street" />
+                            <span asp-validation-for="Addresses[0].Street" class="text-danger"></span>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" name="Addresses[0].Barangay" placeholder="Barangay" />
+                            <span asp-validation-for="Addresses[0].Barangay" class="text-danger"></span>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" name="Addresses[0].City" placeholder="City" />
+                            <span asp-validation-for="Addresses[0].City" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">
+                            <input type="text" class="form-control" name="Addresses[0].Province" placeholder="Province" />
+                            <span asp-validation-for="Addresses[0].Province" class="text-danger"></span>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" name="Addresses[0].ZipCode" placeholder="Zip Code" />
+                            <span asp-validation-for="Addresses[0].ZipCode" class="text-danger"></span>
+                        </div>
+                        <div class="col-4">
+                            <!-- Include the Remove button -->
+                            <button type="button" class="btn btn-danger btn-sm remove-address" style="display: none;">Remove</button>
                         </div>
                     </div>
                 </div>
@@ -78,6 +77,9 @@
                                 <input type="text" class="form-control" name="ContactNumbers[0].Number" placeholder="Enter Contact Number" />
                                 <span asp-validation-for="ContactNumbers[0].Number" class="text-danger"></span>
                             </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-danger btn-sm remove-contact-number">Remove</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -93,75 +95,129 @@
 </div>
 
 @section Scripts {
-    <script>
-        let addressIndex = 1;
-        let contactNumberIndex = 1;
+        <script>
+            let addressIndex = 1;
+            let contactNumberIndex = 1;
 
-        // Add new address fields
-        document.getElementById('addAddressButton').addEventListener('click', function () {
-            const addressSection = document.getElementById('addressSection');
-            const addressGroup = document.createElement('div');
-            addressGroup.className = 'address-group mb-4';
-            addressGroup.innerHTML = `
-                        <h5 class="form-label">Address ${addressIndex + 1}</h5>
-                        <div class="row">
-                            <div class="col-4">
-                                <input type="text" class="form-control" name="Addresses[${addressIndex}].Street" placeholder="Street" />
-                            </div>
-                            <div class="col-4">
-                                <input type="text" class="form-control" name="Addresses[${addressIndex}].Barangay" placeholder="Barangay" />
-                            </div>
-                            <div class="col-4">
-                                <input type="text" class="form-control" name="Addresses[${addressIndex}].City" placeholder="City" />
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-4">
-                                <input type="text" class="form-control" name="Addresses[${addressIndex}].Province" placeholder="Province" />
-                            </div>
-                            <div class="col-4">
-                                <input type="text" class="form-control" name="Addresses[${addressIndex}].ZipCode" placeholder="Zip Code" />
-                            </div>
-                            <div class="col-4">
-                                <button type="button" class="btn btn-danger btn-sm remove-address">Remove</button>
-                            </div>
-                        </div>
-                    `;
-            addressSection.appendChild(addressGroup);
-            addressIndex++;
-        });
-
-        // Remove address fields
-        document.getElementById('addressSection').addEventListener('click', function (e) {
-            if (e.target.classList.contains('remove-address')) {
-                e.target.closest('.address-group').remove();
+            function toggleRemoveButtons(container, buttonClass) {
+                const buttons = container.querySelectorAll(buttonClass);
+                buttons.forEach(button => button.style.display = buttons.length > 1 ? 'inline-block' : 'none');
             }
-        });
 
-        // Add new contact number fields
-        document.getElementById('addContactNumberButton').addEventListener('click', function () {
-            const contactNumberSection = document.getElementById('contactNumberSection');
-            const contactNumberGroup = document.createElement('div');
-            contactNumberGroup.className = 'contact-number-group mb-4';
-            contactNumberGroup.innerHTML = `
-                        <div class="row">
-                            <div class="col-6">
-                                <input type="text" class="form-control" name="ContactNumbers[${contactNumberIndex}].Number" placeholder="Enter Contact Number" />
-                            </div>
-                            <div class="col-4">
-                                <button type="button" class="btn btn-danger btn-sm remove-contact-number">Remove</button>
-                            </div>
-                        </div>
-                    `;
-            contactNumberSection.appendChild(contactNumberGroup);
-            contactNumberIndex++;
-        });
-
-        // Remove contact number fields
-        document.getElementById('contactNumberSection').addEventListener('click', function (e) {
-            if (e.target.classList.contains('remove-contact-number')) {
-                e.target.closest('.contact-number-group').remove();
+            function reindexAddresses() {
+                const addressGroups = document.querySelectorAll('#addressSection .address-group');
+                addressGroups.forEach((group, index) => {
+                    group.querySelectorAll('input').forEach(input => {
+                        const name = input.name.replace(/\[.*?\]/, `[${index}]`);
+                        input.setAttribute('name', name);
+                    });
+                });
+                addressIndex = addressGroups.length;
             }
-        });
-    </script>
+
+            function reindexContactNumbers() {
+                const contactNumberGroups = document.querySelectorAll('#contactNumberSection .contact-number-group');
+                contactNumberGroups.forEach((group, index) => {
+                    const input = group.querySelector('input');
+                    input.setAttribute('name', `ContactNumbers[${index}].Number`);
+                });
+                contactNumberIndex = contactNumberGroups.length;
+            }
+
+            // Add new address fields
+            document.getElementById('addAddressButton').addEventListener('click', function () {
+                const addressSection = document.getElementById('addressSection');
+                const addressGroup = document.createElement('div');
+                addressGroup.className = 'address-group mb-4';
+                addressGroup.innerHTML = `
+                    <h5 class="form-label">Address</h5>
+                    <div class="row">
+                        <div class="col-4">
+                            <input type="text" class="form-control" name="Addresses[${addressIndex}].Street" placeholder="Street" />
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" name="Addresses[${addressIndex}].Barangay" placeholder="Barangay" />
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" name="Addresses[${addressIndex}].City" placeholder="City" />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">
+                            <input type="text" class="form-control" name="Addresses[${addressIndex}].Province" placeholder="Province" />
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" name="Addresses[${addressIndex}].ZipCode" placeholder="Zip Code" />
+                        </div>
+                        <div class="col-4">
+                            <button type="button" class="btn btn-danger btn-sm remove-address">Remove</button>
+                        </div>
+                    </div>
+                `;
+                addressSection.appendChild(addressGroup);
+                addressIndex++;
+                toggleRemoveButtons(addressSection, '.remove-address');
+            });
+
+            // Remove address fields
+            document.getElementById('addressSection').addEventListener('click', function (e) {
+                if (e.target.classList.contains('remove-address')) {
+                    e.target.closest('.address-group').remove();
+                    reindexAddresses();
+                    toggleRemoveButtons(document.getElementById('addressSection'), '.remove-address');
+                }
+            });
+
+            // Add new contact number fields
+            document.getElementById('addContactNumberButton').addEventListener('click', function () {
+                const contactNumberSection = document.getElementById('contactNumberSection');
+                const contactNumberGroup = document.createElement('div');
+                contactNumberGroup.className = 'contact-number-group mb-4';
+                contactNumberGroup.innerHTML = `
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="text" class="form-control" name="ContactNumbers[${contactNumberIndex}].Number" placeholder="Enter Contact Number" />
+                        </div>
+                        <div class="col-4">
+                            <button type="button" class="btn btn-danger btn-sm remove-contact-number">Remove</button>
+                        </div>
+                    </div>
+                `;
+                contactNumberSection.appendChild(contactNumberGroup);
+                contactNumberIndex++;
+                toggleRemoveButtons(contactNumberSection, '.remove-contact-number');
+            });
+
+            // Remove contact number fields
+            document.getElementById('contactNumberSection').addEventListener('click', function (e) {
+                if (e.target.classList.contains('remove-contact-number')) {
+                    e.target.closest('.contact-number-group').remove();
+                    reindexContactNumbers();
+                    toggleRemoveButtons(document.getElementById('contactNumberSection'), '.remove-contact-number');
+                }
+            });
+
+            // Form validation before submission
+            document.querySelector('form').addEventListener('submit', function (e) {
+                const addressGroups = document.querySelectorAll('#addressSection .address-group');
+                const contactNumberGroups = document.querySelectorAll('#contactNumberSection .contact-number-group');
+
+                if (addressGroups.length === 0) {
+                    alert('At least one address is required.');
+                    e.preventDefault();
+                    return;
+                }
+
+                if (contactNumberGroups.length === 0) {
+                    alert('At least one contact number is required.');
+                    e.preventDefault();
+                }
+            });
+
+            // Ensure the Remove button visibility is updated on page load
+            document.addEventListener('DOMContentLoaded', function () {
+                toggleRemoveButtons(document.getElementById('addressSection'), '.remove-address');
+                toggleRemoveButtons(document.getElementById('contactNumberSection'), '.remove-contact-number');
+            });
+        </script>
 }

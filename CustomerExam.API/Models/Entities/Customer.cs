@@ -1,7 +1,4 @@
-﻿using System.Net;
-using System.Reflection;
-
-namespace CustomerExam.API.Models.Entities;
+﻿namespace CustomerExam.API.Models.Entities;
 
 public class Customer
 {

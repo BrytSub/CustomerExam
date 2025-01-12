@@ -11,6 +11,7 @@ namespace CustomerExam.UI.Controllers
         public async Task<IActionResult> Index()
         {
             var customers = await _customerApiService.GetAllCustomerAsync();
+            ViewBag.SuccessMessage = TempData["SuccessMessage"];
             return View(customers);
         }
 
@@ -31,6 +32,7 @@ namespace CustomerExam.UI.Controllers
             if (ModelState.IsValid)
             {
                 await _customerApiService.CreateCustomerAsync(customer);
+                TempData["SuccessMessage"] = "Customer created!";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -49,6 +51,7 @@ namespace CustomerExam.UI.Controllers
             if (ModelState.IsValid)
             {
                 await _customerApiService.UpdateCustomerAsync(id, customer);
+                TempData["SuccessMessage"] = "Customer updated!";
                 return RedirectToAction(nameof(Index));
             }
             return View(customer);
@@ -64,6 +67,7 @@ namespace CustomerExam.UI.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _customerApiService.DeleteCustomerAsync(id);
+            TempData["SuccessMessage"] = "Customer deleted!";
             return RedirectToAction(nameof(Index));
         }
     }
